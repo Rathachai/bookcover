@@ -1,0 +1,137 @@
+<html>
+<head>
+<style>
+	svg{
+		border:1px black solid;
+	}
+</style>
+<script src="./lib/jquery/jquery2.1.3.js"></script>
+<script>
+
+	var bcovW = 300;
+	var bcovH = 400;
+	var hue = rand(1, 340);
+
+	function genCover(){
+		var bcov=$("#bcov");
+		hue = rand(1, 340);
+		
+		$(bcov).empty();
+		$(bcov).append(genBackground());
+
+		var numObj = rand(50,300);
+
+		for(var i=0; i<numObj; i++){
+			var fx = rand(1,3);
+			switch(fx){
+				case 1:
+				case 2: $(bcov).append(genCircle()); break;
+				case 3: $(bcov).append(genRect()); break;
+			}
+		}
+
+		$(bcov).append(genTextPanel(50));
+		$(bcov).append(genTextPanel(60));
+
+		$(bcov).append(genText("A BOOK of YOU", 150,30));
+	}
+
+	function genCircle(){
+		var cx = rand(0,bcovW);
+		var cy = rand(0,bcovH);
+		var  r = rand(10,50);
+		var elem = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+		$(elem).attr("cx",cx);
+		$(elem).attr("cy",cy);
+		$(elem).attr("r",r);
+		$(elem).attr("fill",get_random_color());
+		$(elem).attr("fill-opacity", rand(10,90)/100);
+
+		return elem;
+	}
+
+	function genRect(){
+		var x = rand(0,bcovW) -20;
+		var y = rand(0,bcovH) -20;
+		var w = rand(60,100);
+		var h = rand(40,80);
+		var elem = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		$(elem).attr("x",x);
+		$(elem).attr("y",y);
+		$(elem).attr("width",w);
+		$(elem).attr("height",h);
+		$(elem).attr("fill",get_random_color());
+		$(elem).attr("fill-opacity", rand(10,90)/100);
+
+		return elem;
+	}
+
+	function genBackground(){
+		var elem = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		$(elem).attr("x",0);
+		$(elem).attr("y",0);
+		$(elem).attr("width",bcovW);
+		$(elem).attr("height",bcovH);
+		$(elem).attr("fill",get_random_color());
+
+		return elem;
+	}
+
+	function genTextPanel(y){
+		var elem = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		$(elem).attr("x",0);
+		$(elem).attr("y",y);
+		$(elem).attr("width",bcovW);
+		$(elem).attr("height",200);
+		$(elem).attr("fill","white");
+		$(elem).attr("fill-opacity", 0.5);
+
+		return elem;
+	}
+
+	function genText(text,y,fsize){
+		var elem = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		$(elem).attr("x",bcovW/2);
+		$(elem).attr("y",y);
+		$(elem).attr("fill","black");
+		$(elem).attr("font-size",fsize);
+		$(elem).attr("text-anchor","middle");
+		$(elem).attr("alignment-baseline","central");
+		$(elem).append(text);
+
+		return elem;
+	}
+
+	function rand(min, max) {
+	    return Math.round(min + Math.random() * (max - min));
+	}
+
+	function get_random_color() {
+	    var h = hue + rand(0,20);
+	    var s = rand(10, 90);
+	    var l = rand(20, 90);
+	    return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+	}
+
+
+	$( document ).ready(function() {
+		genCover();
+	});
+
+	function download(){
+		var bcov=$("#bcov");
+		//bcov = document.getElementById("bcov");
+		window.location = bcov.toDataURL("image/png");
+	}
+
+</script>
+</head>
+<body>
+	<h1>Book Cover</h1>
+	<button onclick="genCover()">Generate...</button>
+	<hr/>
+	<svg id="bcov" width="300" height="400"></svg>
+	<hr/>
+	<button onclick="download()">Download</button>
+</body>
+</html>
