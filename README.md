@@ -1,5 +1,5 @@
 # BookCover
-Create a book cover by randomly generating from differnt shapes and colors.
+Randomly generating a book cover from differnt shapes and colors.
 
 ## Uses
 - jQuery
